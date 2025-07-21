@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useNewsArticles } from '../hooks/useSupabaseData';
+import ArticleModal from '../components/ArticleModal';
 import { Calendar, ExternalLink, Eye, Share2, Tag } from 'lucide-react';
+import type { NewsArticle } from '../types/database';
 
 const News: React.FC = () => {
   const { currentLanguage } = useLanguage();
   const { articles, loading, error } = useNewsArticles();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (loading) {
     return (
@@ -40,6 +44,15 @@ const News: React.FC = () => {
   const truncateContent = (content: string, maxLength: number = 200) => {
     if (content.length <= maxLength) return content;
     return content.substring(0, maxLength) + '...';
+  };
+
+  const handleReadMore = (article: NewsArticle) => {
+    if (article.external_link) {
+      window.open(article.external_link, '_blank', 'noopener,noreferrer');
+    } else {
+      setSelectedArticle(article);
+      setIsModalOpen(true);
+    }
   };
 
   return (
@@ -237,13 +250,7 @@ const News: React.FC = () => {
                     </a>
                   ) : (
                     <button 
-                      onClick={() => {
-                        // For now, we'll show an alert. You can replace this with navigation to a detailed article page
-                        alert(currentLanguage === 'zh' ? '文章详情页面开发中' : 'Article detail page under development');
-                      }}
-                      className="text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
-                    >
-                      {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                      onClick={() => handleReadMore(article)}
                     </button>
                   )}
                 </div>
@@ -307,6 +314,12 @@ const News: React.FC = () => {
           </div>
         )}
       </div>
+
+      <ArticleModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        article={selectedArticle}
+      />
     </div>
   );
 };
