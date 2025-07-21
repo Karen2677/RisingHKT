@@ -161,7 +161,13 @@ const News: React.FC = () => {
                           <ExternalLink size={16} />
                         </a>
                       ) : (
-                        <button className="text-[#0A2A5E] hover:text-blue-700 font-medium">
+                        <button 
+                          onClick={() => {
+                            // For now, we'll show an alert. You can replace this with navigation to a detailed article page
+                            alert(currentLanguage === 'zh' ? '文章详情页面开发中' : 'Article detail page under development');
+                          }}
+                          className="text-[#0A2A5E] hover:text-blue-700 font-medium"
+                        >
                           {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
                         </button>
                       )}
@@ -230,7 +236,13 @@ const News: React.FC = () => {
                       <ExternalLink size={14} />
                     </a>
                   ) : (
-                    <button className="text-[#0A2A5E] hover:text-blue-700 text-sm font-medium">
+                    <button 
+                      onClick={() => {
+                        // For now, we'll show an alert. You can replace this with navigation to a detailed article page
+                        alert(currentLanguage === 'zh' ? '文章详情页面开发中' : 'Article detail page under development');
+                      }}
+                      className="text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
+                    >
                       {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
                     </button>
                   )}
