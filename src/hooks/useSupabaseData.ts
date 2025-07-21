@@ -237,21 +237,21 @@ export function useNewsArticles() {
     const fetchArticles = async () => {
       try {
         const { data, error } = await supabase
-          .from('news_articles')
+          .from('industry_news')
           .select('*')
           .eq('is_active', true)
           .order('publish_date', { ascending: false });
 
         if (error) {
-          console.error('News articles fetch error:', error);
+          console.error('Industry news fetch error:', error);
           throw error;
         }
         
-        console.log('News articles data structure:', data);
+        console.log('Industry news data structure:', data);
         setArticles(data || []);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'An error occurred fetching news articles';
-        console.error('News articles error:', errorMessage);
+        const errorMessage = err instanceof Error ? err.message : 'An error occurred fetching industry news';
+        console.error('Industry news error:', errorMessage);
         setError(errorMessage);
       } finally {
         setLoading(false);
@@ -261,8 +261,8 @@ export function useNewsArticles() {
     fetchArticles();
 
     const subscription = supabase
-      .channel('news_articles_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'news_articles' }, fetchArticles)
+      .channel('industry_news_changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'industry_news' }, fetchArticles)
       .subscribe();
 
     return () => {
