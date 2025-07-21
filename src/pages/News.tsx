@@ -215,6 +215,61 @@ const News: React.FC = () => {
                           </span>
                         </button>
                       </div>
+                      <div className="flex items-center gap-3 ml-auto">
+                        <button
+                          onClick={async () => {
+                            await handleShare(article);
+                            const shareUrl = article.external_link || `${window.location.origin}/news/${article.slug || article.id}`;
+                            if (navigator.share) {
+                              try {
+                                await navigator.share({
+                                  title: currentLanguage === 'zh' ? article.title_zh : article.title_en,
+                                  url: shareUrl
+                                });
+                              } catch (err) {
+                                console.log('Share cancelled or failed');
+                              }
+                            } else {
+                              // Fallback: copy to clipboard
+                              try {
+                                await navigator.clipboard.writeText(shareUrl);
+                                alert(currentLanguage === 'zh' ? '链接已复制到剪贴板' : 'Link copied to clipboard');
+                              } catch (clipboardError) {
+                                console.warn('Failed to copy to clipboard:', clipboardError);
+                              }
+                            }
+                          }}
+                          className="inline-flex items-center gap-1 text-gray-500 hover:text-[#0A2A5E] transition-colors"
+                        >
+                          <Share2 size={16} />
+                          <span className="text-sm">
+                            {currentLanguage === 'zh' ? '分享' : 'Share'}
+                          </span>
+                        </button>
+                        
+                        {article.external_link ? (
+                          <a 
+                            href={article.external_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => handleReadMore(article)}
+                            className="inline-flex items-center gap-2 bg-[#0A2A5E] text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200"
+                          >
+                            <span>
+                              {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                            </span>
+                            <ExternalLink size={16} />
+                          </a>
+                        ) : (
+                          <Link
+                            to={`/news/${article.slug || article.id}`}
+                            onClick={() => handleReadMore(article)}
+                            className="bg-[#0A2A5E] text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200"
+                          >
+                            {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -271,6 +326,58 @@ const News: React.FC = () => {
                     </div>
                   )}
                   <div className="flex items-center gap-3">
+                    <button
+                      onClick={async () => {
+                        await handleShare(article);
+                        if (navigator.share) {
+                          try {
+                            await navigator.share({
+                              title: currentLanguage === 'zh' ? article.title_zh : article.title_en,
+                              url: article.external_link || window.location.href
+                            });
+                          } catch (err) {
+                            console.log('Share cancelled or failed');
+                          }
+                        } else {
+                          // Fallback: copy to clipboard
+                          const url = article.external_link || window.location.href;
+                          navigator.clipboard.writeText(url).then(() => {
+                            alert(currentLanguage === 'zh' ? '链接已复制到剪贴板' : 'Link copied to clipboard');
+                          });
+                        }
+                      }}
+                      className="inline-flex items-center gap-1 text-gray-500 hover:text-[#0A2A5E] transition-colors"
+                    >
+                      <Share2 size={14} />
+                      <span className="text-xs">
+                        {currentLanguage === 'zh' ? '分享' : 'Share'}
+                      </span>
+                    </button>
+                    
+                    {article.external_link ? (
+                      <a 
+                        href={article.external_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => handleReadMore(article)}
+                        className="inline-flex items-center gap-1 bg-[#0A2A5E] text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors duration-200"
+                      >
+                        <span>
+                          {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                        </span>
+                        <ExternalLink size={14} />
+                      </a>
+                    ) : (
+                      <Link
+                        to={`/news/${article.slug || article.id}`}
+                        onClick={() => handleReadMore(article)}
+                        className="bg-[#0A2A5E] text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors duration-200"
+                      >
+                        {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                      </Link>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3 ml-auto">
                     <button
                       onClick={async () => {
                         await handleShare(article);
