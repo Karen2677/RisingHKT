@@ -245,7 +245,7 @@ const NewsArticle: React.FC = () => {
 
             {/* Action Buttons */}
             <div className="pt-6 border-t border-gray-200">
-              <div className="flex self-end items-center gap-4">
+              <div className="flex justify-end items-center gap-4">
                 {article.external_link && (
                   <a 
                     href={article.external_link}
