@@ -197,22 +197,21 @@ const News: React.FC = () => {
                         <button
                           onClick={async () => {
                             await handleShare(article);
-                           const shareUrl = article.external_link || `${window.location.origin}/news/${article.slug || article.id}`;
+                            const shareUrl = article.external_link || `${window.location.origin}/news/${article.slug || article.id}`;
                             if (navigator.share) {
                               try {
                                 await navigator.share({
                                   title: currentLanguage === 'zh' ? article.title_zh : article.title_en,
-                                 url: shareUrl
+                                  url: shareUrl
                                 });
                               } catch (err) {
                                 console.log('Share cancelled or failed');
                               }
-                         const shareUrl = article.external_link || `${window.location.origin}/news/${article.slug || article.id}`;
                             } else {
                               // Fallback: copy to clipboard
-                             const url = shareUrl;
+                              const url = shareUrl;
                               navigator.clipboard.writeText(url).then(() => {
-                               url: shareUrl
+                                alert(currentLanguage === 'zh' ? '链接已复制到剪贴板' : 'Link copied to clipboard');
                               });
                             }
                           }}
@@ -307,7 +306,7 @@ const News: React.FC = () => {
                         await handleShare(article);
                         if (navigator.share) {
                           try {
-                           const url = shareUrl;
+                            await navigator.share({
                               title: currentLanguage === 'zh' ? article.title_zh : article.title_en,
                               url: article.external_link || window.location.href
                             });
