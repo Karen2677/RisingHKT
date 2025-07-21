@@ -18,6 +18,7 @@ const Header: React.FC = () => {
   const navItems = [
     { path: '/', labelZh: '首页', labelEn: 'Home' },
     { path: '/products', labelZh: '产品与服务', labelEn: 'Products & Services' },
+    { path: '/news', labelZh: '行业动态', labelEn: 'Industry News' },
     { path: '/contact', labelZh: '联系方式', labelEn: 'Contact Us' },
     { path: '/about', labelZh: '关于我们', labelEn: 'About Us' },
   ];

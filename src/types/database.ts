@@ -90,3 +90,28 @@ export interface Admin {
   created_at?: string;
   updated_at?: string;
 }
+
+export interface NewsArticle {
+  id: string;
+  title_zh: string;
+  title_en: string;
+  content_zh: string;
+  content_en: string;
+  slug: string;
+  meta_description_zh?: string;
+  meta_description_en?: string;
+  source?: string;
+  external_link?: string;
+  category?: string;
+  tags?: string[];
+  cover_image?: string;
+  attachments?: any;
+  is_active?: boolean;
+  is_featured?: boolean;
+  display_order?: number;
+  publish_date?: string;
+  view_count?: number;
+  share_count?: number;
+  created_at?: string;
+  updated_at?: string;
+}

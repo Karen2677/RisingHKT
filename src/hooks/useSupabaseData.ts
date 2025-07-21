@@ -227,3 +227,48 @@ export function useMetaTags(pageKey: string) {
 
   return { metaTags, loading, error };
 }
+
+export function useNewsArticles() {
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('news_articles')
+          .select('*')
+          .eq('is_active', true)
+          .order('publish_date', { ascending: false });
+
+        if (error) {
+          console.error('News articles fetch error:', error);
+          throw error;
+        }
+        
+        console.log('News articles data structure:', data);
+        setArticles(data || []);
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'An error occurred fetching news articles';
+        console.error('News articles error:', errorMessage);
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+
+    const subscription = supabase
+      .channel('news_articles_changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'news_articles' }, fetchArticles)
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  return { articles, loading, error };
+}

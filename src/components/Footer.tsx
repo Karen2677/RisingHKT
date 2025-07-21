@@ -53,6 +53,11 @@ const Footer: React.FC = () => {
                 </a>
               </li>
               <li>
+                <a href="/news" className="text-blue-200 hover:text-white transition-colors">
+                  {t('行业动态', 'Industry News')}
+                </a>
+              </li>
+              <li>
                 <a href="/about" className="text-blue-200 hover:text-white transition-colors">
                   {t('关于我们', 'About Us')}
                 </a>
