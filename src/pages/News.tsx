@@ -169,7 +169,7 @@ const News: React.FC = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => handleReadMore(article)}
-                            className="inline-flex items-center gap-2 bg-[#0A2A5E] text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
+                            className="inline-flex items-center gap-2 bg-[#0A2A5E] text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200"
                           >
                             <span>
                               {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
@@ -180,7 +180,7 @@ const News: React.FC = () => {
                           <Link
                             to={`/news/${article.slug || article.id}`}
                             onClick={() => handleReadMore(article)}
-                            className="bg-[#0A2A5E] text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
+                            className="bg-[#0A2A5E] text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200"
                           >
                             {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
                           </Link>
@@ -271,29 +271,6 @@ const News: React.FC = () => {
                     </div>
                   )}
                   <div className="flex items-center gap-3">
-                    {article.external_link ? (
-                      <a 
-                        href={article.external_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => handleReadMore(article)}
-                        className="inline-flex items-center gap-1 bg-[#0A2A5E] text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
-                      >
-                        <span>
-                          {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
-                        </span>
-                        <ExternalLink size={14} />
-                      </a>
-                    ) : (
-                      <Link
-                        to={`/news/${article.slug || article.id}`}
-                        onClick={() => handleReadMore(article)}
-                        className="bg-[#0A2A5E] text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
-                      >
-                        {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
-                      </Link>
-                    )}
-                    
                     <button
                       onClick={async () => {
                         await handleShare(article);
@@ -321,6 +298,29 @@ const News: React.FC = () => {
                         {currentLanguage === 'zh' ? '分享' : 'Share'}
                       </span>
                     </button>
+                    
+                    {article.external_link ? (
+                      <a 
+                        href={article.external_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => handleReadMore(article)}
+                        className="inline-flex items-center gap-1 bg-[#0A2A5E] text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors duration-200"
+                      >
+                        <span>
+                          {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                        </span>
+                        <ExternalLink size={14} />
+                      </a>
+                    ) : (
+                      <Link
+                        to={`/news/${article.slug || article.id}`}
+                        onClick={() => handleReadMore(article)}
+                        className="bg-[#0A2A5E] text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors duration-200"
+                      >
+                        {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
