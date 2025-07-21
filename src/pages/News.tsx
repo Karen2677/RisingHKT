@@ -158,9 +158,6 @@ const News: React.FC = () => {
                       <h3 className="text-xl font-bold mb-3 text-[#0A2A5E]">
                         {currentLanguage === 'zh' ? article.title_zh : article.title_en}
                       </h3>
-                      <p className="text-gray-600 mb-4">
-                        {truncateContent(currentLanguage === 'zh' ? article.content_zh : article.content_en)}
-                      </p>
                       {article.external_link ? (
                         <a 
                           href={article.external_link}
@@ -224,9 +221,6 @@ const News: React.FC = () => {
                   <h3 className="text-lg font-bold mb-2 text-[#0A2A5E]">
                     {currentLanguage === 'zh' ? article.title_zh : article.title_en}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-3">
-                    {truncateContent(currentLanguage === 'zh' ? article.content_zh : article.content_en, 120)}
-                  </p>
                   {article.tags && article.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1 mb-3">
                       {article.tags.slice(0, 3).map((tag, index) => (
