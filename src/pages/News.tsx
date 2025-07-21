@@ -169,7 +169,7 @@ const News: React.FC = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => handleReadMore(article)}
-                            className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-blue-700 font-medium"
+                            className="inline-flex items-center gap-2 bg-[#0A2A5E] text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
                           >
                             <span>
                               {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
@@ -180,7 +180,7 @@ const News: React.FC = () => {
                           <Link
                             to={`/news/${article.slug || article.id}`}
                             onClick={() => handleReadMore(article)}
-                            className="text-[#0A2A5E] hover:text-blue-700 font-medium"
+                            className="bg-[#0A2A5E] text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
                           >
                             {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
                           </Link>
@@ -277,7 +277,7 @@ const News: React.FC = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => handleReadMore(article)}
-                        className="inline-flex items-center gap-1 text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
+                        className="inline-flex items-center gap-1 bg-[#0A2A5E] text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
                       >
                         <span>
                           {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
@@ -288,7 +288,7 @@ const News: React.FC = () => {
                       <Link
                         to={`/news/${article.slug || article.id}`}
                         onClick={() => handleReadMore(article)}
-                        className="text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
+                        className="bg-[#0A2A5E] text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
                       >
                         {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
                       </Link>

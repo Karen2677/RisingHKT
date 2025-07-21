@@ -154,7 +154,7 @@ const Products: React.FC = () => {
           </p>
           <a 
             href="/contact" 
-            className="inline-block bg-[#0A2A5E] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200"
+            className="inline-block bg-[#0A2A5E] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
           >
             <span 
               className={currentLanguage === 'zh' ? 'block' : 'hidden'} 
