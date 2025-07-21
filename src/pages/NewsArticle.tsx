@@ -262,7 +262,7 @@ const NewsArticle: React.FC = () => {
                 
                 <button
                   onClick={handleShare}
-                  className="inline-flex items-center gap-2 text-gray-500 self-end hover:text-[#0A2A5E] transition-colors"
+                  className="inline-flex items-center gap-2 text-gray-500 hover:text-[#0A2A5E] transition-colors"
                 >
                   <Share2 size={16} />
                   <span>
