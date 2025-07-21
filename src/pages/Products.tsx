@@ -152,23 +152,25 @@ const Products: React.FC = () => {
               In addition to standard products, we can provide customized neuromodulation solutions based on your specific needs. Whether it's research experimental design, equipment selection, or technical training, our professional team will provide you with comprehensive support and services.
             </span>
           </p>
-          <a 
-            href="/contact" 
-            className="inline-block bg-[#0A2A5E] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200 ml-auto"
-          >
-            <span 
-              className={currentLanguage === 'zh' ? 'block' : 'hidden'} 
-              data-lang="zh"
+          <div className="flex justify-end">
+            <a 
+              href="/contact" 
+              className="inline-block bg-[#0A2A5E] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200"
             >
-              咨询定制方案
-            </span>
-            <span 
-              className={currentLanguage === 'en' ? 'block' : 'hidden'} 
-              data-lang="en"
-            >
-              Inquire About Custom Solutions
-            </span>
-          </a>
+              <span 
+                className={currentLanguage === 'zh' ? 'block' : 'hidden'} 
+                data-lang="zh"
+              >
+                咨询定制方案
+              </span>
+              <span 
+                className={currentLanguage === 'en' ? 'block' : 'hidden'} 
+                data-lang="en"
+              >
+                Inquire About Custom Solutions
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
