@@ -162,7 +162,7 @@ const News: React.FC = () => {
                           href={article.external_link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-red-700 font-medium"
+                          className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-blue-700 font-medium"
                         >
                           <span>
                             {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
@@ -175,7 +175,7 @@ const News: React.FC = () => {
                             // For now, we'll show an alert. You can replace this with navigation to a detailed article page
                             alert(currentLanguage === 'zh' ? '文章详情页面开发中' : 'Article detail page under development');
                           }}
-                          className="text-[#0A2A5E] hover:text-blue-700 font-medium"
+                          className="text-[#0A2A5E] hover:text-red-700 font-medium"
                         >
                           {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
                         </button>
