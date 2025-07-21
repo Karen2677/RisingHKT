@@ -119,14 +119,13 @@ const News: React.FC = () => {
                 Featured Articles
               </span>
             </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-8">
               {filteredArticles
                 .filter(article => article.is_featured)
-                .slice(0, 2)
                 .map((article) => (
                   <div key={article.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                     {article.cover_image && (
-                      <div className="h-48 overflow-hidden">
+                      <div className="h-64 md:h-80 overflow-hidden">
                         <img 
                           src={article.cover_image} 
                           alt={currentLanguage === 'zh' ? article.title_zh : article.title_en}
@@ -155,7 +154,7 @@ const News: React.FC = () => {
                           </div>
                         )}
                       </div>
-                      <h3 className="text-xl font-bold mb-3 text-[#0A2A5E]">
+                      <h3 className="text-xl md:text-2xl font-bold mb-3 text-[#0A2A5E]">
                         {currentLanguage === 'zh' ? article.title_zh : article.title_en}
                       </h3>
                       {article.external_link ? (
@@ -189,13 +188,13 @@ const News: React.FC = () => {
         )}
 
         {/* All Articles */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="space-y-6">
           {filteredArticles
             .filter(article => !article.is_featured)
             .map((article) => (
               <div key={article.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 {article.cover_image && (
-                  <div className="h-40 overflow-hidden">
+                  <div className="h-48 md:h-64 overflow-hidden">
                     <img 
                       src={article.cover_image} 
                       alt={currentLanguage === 'zh' ? article.title_zh : article.title_en}
@@ -218,7 +217,7 @@ const News: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <h3 className="text-lg font-bold mb-2 text-[#0A2A5E]">
+                  <h3 className="text-lg md:text-xl font-bold mb-2 text-[#0A2A5E]">
                     {currentLanguage === 'zh' ? article.title_zh : article.title_en}
                   </h3>
                   {article.tags && article.tags.length > 0 && (
