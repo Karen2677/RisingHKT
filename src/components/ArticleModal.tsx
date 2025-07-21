@@ -77,8 +77,12 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ isOpen, onClose, article })
 
           {/* Article Content */}
           <div className="prose max-w-none mb-6">
-            <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-              {currentLanguage === 'zh' ? article.content_zh : article.content_en}
+            <div 
+              className="text-gray-700 leading-relaxed prose prose-lg max-w-none prose-img:rounded-lg prose-img:shadow-md prose-headings:text-[#0A2A5E] prose-links:text-blue-600 prose-links:hover:text-blue-800"
+              dangerouslySetInnerHTML={{
+                __html: currentLanguage === 'zh' ? article.content_zh : article.content_en
+              }}
+            >
             </div>
           </div>
 
