@@ -23,6 +23,9 @@ const NewsArticle: React.FC = () => {
       }
 
       try {
+        setLoading(true);
+        setError(null);
+        
         // Try to find by slug first, then by ID
         let { data, error } = await supabase
           .from('industry_news')
@@ -45,14 +48,23 @@ const NewsArticle: React.FC = () => {
         }
 
         if (error) {
-          console.error('Article fetch error:', error);
-          throw error;
+          if (error.code === 'PGRST116') {
+            setError('Article not found');
+          } else {
+            console.error('Article fetch error:', error);
+            setError('Failed to load article');
+          }
+          return;
         }
 
         if (data) {
           setArticle(data);
           // Increment view count when article is loaded
-          await incrementViewCount(data.id);
+          try {
+            await incrementViewCount(data.id);
+          } catch (viewError) {
+            console.warn('Failed to increment view count:', viewError);
+          }
         }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'An error occurred fetching the article';
@@ -68,14 +80,23 @@ const NewsArticle: React.FC = () => {
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
+    try {
     const date = new Date(dateString);
+      if (isNaN(date.getTime())) return '';
     return date.toLocaleDateString(currentLanguage === 'zh' ? 'zh-CN' : 'en-US');
+    } catch {
+      return '';
+    }
   };
 
   const handleShare = async () => {
     if (!article) return;
 
-    await incrementShareCount(article.id);
+    try {
+      await incrementShareCount(article.id);
+    } catch (shareError) {
+      console.warn('Failed to increment share count:', shareError);
+    }
     
     const shareUrl = article.external_link || window.location.href;
     
@@ -90,9 +111,12 @@ const NewsArticle: React.FC = () => {
       }
     } else {
       // Fallback: copy to clipboard
-      navigator.clipboard.writeText(shareUrl).then(() => {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
         alert(currentLanguage === 'zh' ? '链接已复制到剪贴板' : 'Link copied to clipboard');
-      });
+      } catch (clipboardError) {
+        console.warn('Failed to copy to clipboard:', clipboardError);
+      }
     }
   };
 
