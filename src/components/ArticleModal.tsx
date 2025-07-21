@@ -1,15 +1,16 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { X, Calendar, Eye, Tag, ExternalLink } from 'lucide-react';
+import { X, Calendar, Eye, Tag, ExternalLink, Share2 } from 'lucide-react';
 import type { NewsArticle } from '../types/database';
 
 interface ArticleModalProps {
   isOpen: boolean;
   onClose: () => void;
   article: NewsArticle | null;
+  onShare?: (article: NewsArticle) => Promise<void>;
 }
 
-const ArticleModal: React.FC<ArticleModalProps> = ({ isOpen, onClose, article }) => {
+const ArticleModal: React.FC<ArticleModalProps> = ({ isOpen, onClose, article, onShare }) => {
   const { currentLanguage } = useLanguage();
 
   if (!isOpen || !article) return null;
@@ -62,6 +63,12 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ isOpen, onClose, article })
                 <span>{article.source}</span>
               </div>
             )}
+            {article.share_count !== undefined && (
+              <div className="flex items-center gap-1">
+                <Share2 size={16} />
+                <span>{article.share_count}</span>
+              </div>
+            )}
           </div>
 
           {/* Cover Image */}
@@ -105,17 +112,49 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ isOpen, onClose, article })
           {/* External Link */}
           {article.external_link && (
             <div className="pt-4 border-t border-gray-200">
-              <a 
-                href={article.external_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-blue-700 font-medium"
-              >
-                <span>
-                  {currentLanguage === 'zh' ? '查看原文' : 'View Original'}
-                </span>
-                <ExternalLink size={16} />
-              </a>
+              <div className="flex items-center gap-4">
+                <a 
+                  href={article.external_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-blue-700 font-medium"
+                >
+                  <span>
+                    {currentLanguage === 'zh' ? '查看原文' : 'View Original'}
+                  </span>
+                  <ExternalLink size={16} />
+                </a>
+                
+                {onShare && (
+                  <button
+                    onClick={async () => {
+                      await onShare(article);
+                      if (navigator.share) {
+                        try {
+                          await navigator.share({
+                            title: currentLanguage === 'zh' ? article.title_zh : article.title_en,
+                            url: article.external_link || window.location.href
+                          });
+                        } catch (err) {
+                          console.log('Share cancelled or failed');
+                        }
+                      } else {
+                        // Fallback: copy to clipboard
+                        const url = article.external_link || window.location.href;
+                        navigator.clipboard.writeText(url).then(() => {
+                          alert(currentLanguage === 'zh' ? '链接已复制到剪贴板' : 'Link copied to clipboard');
+                        });
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 text-gray-500 hover:text-[#0A2A5E] transition-colors"
+                  >
+                    <Share2 size={16} />
+                    <span>
+                      {currentLanguage === 'zh' ? '分享' : 'Share'}
+                    </span>
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>

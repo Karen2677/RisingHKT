@@ -2,6 +2,36 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import type { Product, AboutSection, ContactInfo, MetaTag, ProductCategory, NewsArticle } from '../types/database';
 
+// Function to increment view count
+export async function incrementViewCount(articleId: string) {
+  try {
+    const { error } = await supabase.rpc('increment_view_count', {
+      article_id: articleId
+    });
+    
+    if (error) {
+      console.error('Error incrementing view count:', error);
+    }
+  } catch (err) {
+    console.error('Error calling increment_view_count:', err);
+  }
+}
+
+// Function to increment share count
+export async function incrementShareCount(articleId: string) {
+  try {
+    const { error } = await supabase.rpc('increment_share_count', {
+      article_id: articleId
+    });
+    
+    if (error) {
+      console.error('Error incrementing share count:', error);
+    }
+  } catch (err) {
+    console.error('Error calling increment_share_count:', err);
+  }
+}
+
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);

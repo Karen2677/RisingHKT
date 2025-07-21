@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { useNewsArticles } from '../hooks/useSupabaseData';
+import { useNewsArticles, incrementViewCount, incrementShareCount } from '../hooks/useSupabaseData';
 import ArticleModal from '../components/ArticleModal';
 import { Calendar, ExternalLink, Eye, Share2, Tag } from 'lucide-react';
 import type { NewsArticle } from '../types/database';
@@ -47,12 +47,20 @@ const News: React.FC = () => {
   };
 
   const handleReadMore = (article: NewsArticle) => {
+    // Increment view count when user clicks to read more
+    incrementViewCount(article.id);
+    
     if (article.external_link) {
       window.open(article.external_link, '_blank', 'noopener,noreferrer');
     } else {
       setSelectedArticle(article);
       setIsModalOpen(true);
     }
+  };
+
+  const handleShare = async (article: NewsArticle) => {
+    // Increment share count when user shares
+    await incrementShareCount(article.id);
   };
 
   return (
@@ -153,33 +161,67 @@ const News: React.FC = () => {
                             <span>{article.category}</span>
                           </div>
                         )}
+                        {article.share_count !== undefined && (
+                          <div className="flex items-center gap-1">
+                            <Share2 size={16} />
+                            <span>{article.share_count}</span>
+                          </div>
+                        )}
                       </div>
                       <h3 className="text-xl md:text-2xl font-bold mb-3 text-[#0A2A5E]">
                         {currentLanguage === 'zh' ? article.title_zh : article.title_en}
                       </h3>
-                      {article.external_link ? (
-                        <a 
-                          href={article.external_link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-blue-700 font-medium"
-                        >
-                          <span>
+                      <div className="flex items-center gap-4">
+                        {article.external_link ? (
+                          <a 
+                            href={article.external_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => handleReadMore(article)}
+                            className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-blue-700 font-medium"
+                          >
+                            <span>
+                              {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                            </span>
+                            <ExternalLink size={16} />
+                          </a>
+                        ) : (
+                          <button 
+                            onClick={() => handleReadMore(article)}
+                            className="text-[#0A2A5E] hover:text-blue-700 font-medium"
+                          >
                             {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
-                          </span>
-                          <ExternalLink size={16} />
-                        </a>
-                      ) : (
-                        <button 
-                          onClick={() => {
-                            // For now, we'll show an alert. You can replace this with navigation to a detailed article page
-                            alert(currentLanguage === 'zh' ? '文章详情页面开发中' : 'Article detail page under development');
+                          </button>
+                        )}
+                        
+                        <button
+                          onClick={async () => {
+                            await handleShare(article);
+                            if (navigator.share) {
+                              try {
+                                await navigator.share({
+                                  title: currentLanguage === 'zh' ? article.title_zh : article.title_en,
+                                  url: article.external_link || window.location.href
+                                });
+                              } catch (err) {
+                                console.log('Share cancelled or failed');
+                              }
+                            } else {
+                              // Fallback: copy to clipboard
+                              const url = article.external_link || window.location.href;
+                              navigator.clipboard.writeText(url).then(() => {
+                                alert(currentLanguage === 'zh' ? '链接已复制到剪贴板' : 'Link copied to clipboard');
+                              });
+                            }
                           }}
-                          className="text-[#0A2A5E] hover:text-blue-700 font-medium"
+                          className="inline-flex items-center gap-1 text-gray-500 hover:text-[#0A2A5E] transition-colors"
                         >
-                          {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                          <Share2 size={16} />
+                          <span className="text-sm">
+                            {currentLanguage === 'zh' ? '分享' : 'Share'}
+                          </span>
                         </button>
-                      )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -216,6 +258,12 @@ const News: React.FC = () => {
                         <span>{article.view_count}</span>
                       </div>
                     )}
+                    {article.share_count !== undefined && (
+                      <div className="flex items-center gap-1">
+                        <Share2 size={14} />
+                        <span>{article.share_count}</span>
+                      </div>
+                    )}
                   </div>
                   <h3 className="text-lg md:text-xl font-bold mb-2 text-[#0A2A5E]">
                     {currentLanguage === 'zh' ? article.title_zh : article.title_en}
@@ -229,26 +277,57 @@ const News: React.FC = () => {
                       ))}
                     </div>
                   )}
-                  {article.external_link ? (
-                    <a 
-                      href={article.external_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
-                    >
-                      <span>
+                  <div className="flex items-center gap-3">
+                    {article.external_link ? (
+                      <a 
+                        href={article.external_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => handleReadMore(article)}
+                        className="inline-flex items-center gap-1 text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
+                      >
+                        <span>
+                          {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                        </span>
+                        <ExternalLink size={14} />
+                      </a>
+                    ) : (
+                      <button 
+                        onClick={() => handleReadMore(article)}
+                        className="text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
+                      >
                         {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
-                      </span>
-                      <ExternalLink size={14} />
-                    </a>
-                  ) : (
-                    <button 
-                      onClick={() => handleReadMore(article)}
-                      className="text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
+                      </button>
+                    )}
+                    
+                    <button
+                      onClick={async () => {
+                        await handleShare(article);
+                        if (navigator.share) {
+                          try {
+                            await navigator.share({
+                              title: currentLanguage === 'zh' ? article.title_zh : article.title_en,
+                              url: article.external_link || window.location.href
+                            });
+                          } catch (err) {
+                            console.log('Share cancelled or failed');
+                          }
+                        } else {
+                          // Fallback: copy to clipboard
+                          const url = article.external_link || window.location.href;
+                          navigator.clipboard.writeText(url).then(() => {
+                            alert(currentLanguage === 'zh' ? '链接已复制到剪贴板' : 'Link copied to clipboard');
+                          });
+                        }
+                      }}
+                      className="inline-flex items-center gap-1 text-gray-500 hover:text-[#0A2A5E] transition-colors"
                     >
-                      {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
+                      <Share2 size={14} />
+                      <span className="text-xs">
+                        {currentLanguage === 'zh' ? '分享' : 'Share'}
+                      </span>
                     </button>
-                  )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -315,6 +394,7 @@ const News: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         article={selectedArticle}
+        onShare={handleShare}
       />
     </div>
   );
