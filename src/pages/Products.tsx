@@ -65,10 +65,12 @@ const Products: React.FC = () => {
             </span>
           </p>
 
-          <div className="flex flex-wrap gap-3 justify-center mb-8">
+          <div className="mb-8">
+            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex gap-3 min-w-max">
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`px-4 py-2 rounded-full transition-colors duration-200 ${
+              className={`px-4 py-2 rounded-full transition-colors duration-200 whitespace-nowrap flex-shrink-0 ${
                 selectedCategory === null
                   ? 'bg-[#0A2A5E] text-white'
                   : 'bg-white text-[#0A2A5E] border border-[#0A2A5E] hover:bg-gray-50'
@@ -80,7 +82,7 @@ const Products: React.FC = () => {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full transition-colors duration-200 ${
+                className={`px-4 py-2 rounded-full transition-colors duration-200 whitespace-nowrap flex-shrink-0 ${
                   selectedCategory === category.id
                     ? 'bg-[#0A2A5E] text-white'
                     : 'bg-white text-[#0A2A5E] border border-[#0A2A5E] hover:bg-gray-50'
@@ -89,6 +91,8 @@ const Products: React.FC = () => {
                 {currentLanguage === 'zh' ? category.name_zh : category.name_en}
               </button>
             ))}
+              </div>
+            </div>
           </div>
         </div>
         
