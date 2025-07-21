@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logClickEvent, logPageView, logNewsView } from '../utils/eventLogger';
 import { useNewsArticles, incrementViewCount, incrementShareCount } from '../hooks/useSupabaseData';
 import { Calendar, ExternalLink, Eye, Share2, Tag } from 'lucide-react';
 import type { NewsArticle } from '../types/database';
@@ -9,6 +10,10 @@ const News: React.FC = () => {
   const { currentLanguage } = useLanguage();
   const { articles, loading, error } = useNewsArticles();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    logPageView('/news');
+  }, []);
 
   if (loading) {
     return (
@@ -46,11 +51,13 @@ const News: React.FC = () => {
 
   const handleReadMore = (article: NewsArticle) => {
     // Increment view count when user clicks to read more
+    logNewsView(article.id);
     incrementViewCount(article.id);
   };
 
   const handleShare = async (article: NewsArticle) => {
     // Increment share count when user shares
+    logClickEvent(`share_news_${article.id}`);
     await incrementShareCount(article.id);
   };
 
@@ -77,6 +84,10 @@ const News: React.FC = () => {
           <div className="flex flex-wrap gap-3 justify-center mb-8">
             <button
               onClick={() => setSelectedCategory(null)}
+             onClick={() => {
+               logClickEvent('filter_all_news');
+               setSelectedCategory(null);
+             }}
               className={`px-4 py-2 rounded-full transition-colors duration-200 ${
                 selectedCategory === null
                   ? 'bg-[#0A2A5E] text-white'
@@ -88,7 +99,10 @@ const News: React.FC = () => {
             {categories.map((category) => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => {
+                  logClickEvent(`filter_news_category_${category}`);
+                  setSelectedCategory(category);
+                }}
                 className={`px-4 py-2 rounded-full transition-colors duration-200 ${
                   selectedCategory === category
                     ? 'bg-[#0A2A5E] text-white'

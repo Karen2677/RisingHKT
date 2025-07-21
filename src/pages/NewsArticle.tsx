@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logClickEvent, logPageView } from '../utils/eventLogger';
 import { supabase } from '../lib/supabase';
 import { incrementViewCount, incrementShareCount } from '../hooks/useSupabaseData';
 import { Calendar, Eye, Tag, Share2, ArrowLeft, ExternalLink } from 'lucide-react';
@@ -59,6 +60,8 @@ const NewsArticle: React.FC = () => {
 
         if (data) {
           setArticle(data);
+          // Log page view for the specific article
+          logPageView(`/news/${slug}`);
           // Increment view count when article is loaded
           try {
             await incrementViewCount(data.id);
@@ -91,6 +94,8 @@ const NewsArticle: React.FC = () => {
 
   const handleShare = async () => {
     if (!article) return;
+
+    logClickEvent(`share_article_${article.id}`);
 
     try {
       await incrementShareCount(article.id);
@@ -153,6 +158,10 @@ const NewsArticle: React.FC = () => {
         <div className="mb-6">
           <button
             onClick={() => navigate('/news')}
+           onClick={() => {
+             logClickEvent('back_to_news_list');
+             navigate('/news');
+           }}
             className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-blue-700 font-medium transition-colors"
           >
             <ArrowLeft size={20} />
@@ -249,6 +258,7 @@ const NewsArticle: React.FC = () => {
                 {article.external_link && (
                   <a 
                     href={article.external_link}
+                    onClick={() => logClickEvent(`view_original_article_${article.id}`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-blue-700 font-medium transition-colors"

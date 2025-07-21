@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logClickEvent, logLanguageSwitch } from '../utils/eventLogger';
 import { Menu, X, Globe } from 'lucide-react';
 
 const Header: React.FC = () => {
@@ -12,6 +13,9 @@ const Header: React.FC = () => {
   };
 
   const toggleLanguage = () => {
+    const fromLang = currentLanguage;
+    const toLang = currentLanguage === 'zh' ? 'en' : 'zh';
+    logLanguageSwitch(fromLang, toLang);
     setLanguage(currentLanguage === 'zh' ? 'en' : 'zh');
   };
 
@@ -28,7 +32,9 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <NavLink to="/" className="text-white font-semibold text-xl">
+            <span onClick={() => logClickEvent('logo_click')}>
             {t('睿盈汇新', 'Rising HK')}
+            </span>
           </NavLink>
         </div>
 
@@ -38,6 +44,7 @@ const Header: React.FC = () => {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={() => logClickEvent(`nav_${item.path.replace('/', '') || 'home'}`)}
               className={({ isActive }) =>
                 `text-white hover:text-blue-200 transition-colors duration-200 ${
                   isActive ? 'border-b-2 border-white pb-1' : ''
@@ -84,12 +91,15 @@ const Header: React.FC = () => {
               <NavLink
                 key={item.path}
                 to={item.path}
+                onClick={() => {
+                  logClickEvent(`mobile_nav_${item.path.replace('/', '') || 'home'}`);
+                  setIsMenuOpen(false);
+                }}
                 className={({ isActive }) =>
                   `block py-3 text-white hover:text-blue-200 transition-colors duration-200 ${
                     isActive ? 'font-semibold' : ''
                   }`
                 }
-                onClick={() => setIsMenuOpen(false)}
               >
                 {t(item.labelZh, item.labelEn)}
               </NavLink>

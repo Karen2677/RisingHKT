@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logClickEvent, logPageView } from '../utils/eventLogger';
 import ProductCard from '../components/ProductCard';
 import { useProducts, useProductCategories } from '../hooks/useSupabaseData';
 
@@ -8,6 +9,10 @@ const Products: React.FC = () => {
   const { products, loading: productsLoading, error: productsError } = useProducts();
   const { categories, loading: categoriesLoading, error: categoriesError } = useProductCategories();
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+
+  React.useEffect(() => {
+    logPageView('/products');
+  }, []);
 
   if (productsLoading || categoriesLoading) {
     return (
@@ -73,6 +78,10 @@ const Products: React.FC = () => {
               <div className="flex gap-3 min-w-max">
                 <button
                   onClick={() => setSelectedCategory(null)}
+                  onClick={() => {
+                    logClickEvent('filter_all_products');
+                    setSelectedCategory(null);
+                  }}
                   className={`px-4 py-2 rounded-full transition-colors duration-200 whitespace-nowrap flex-shrink-0 ${
                     selectedCategory === null
                       ? 'bg-[#0A2A5E] text-white'
@@ -84,7 +93,10 @@ const Products: React.FC = () => {
                 {Array.isArray(categories) && categories.map((category) => (
                   <button
                     key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
+                    onClick={() => {
+                      logClickEvent(`filter_category_${category.id}`);
+                      setSelectedCategory(category.id);
+                    }}
                     className={`px-4 py-2 rounded-full transition-colors duration-200 whitespace-nowrap flex-shrink-0 ${
                       selectedCategory === category.id
                         ? 'bg-[#0A2A5E] text-white'
@@ -104,6 +116,7 @@ const Products: React.FC = () => {
           {Array.isArray(filteredProducts) && filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
+             id={product.id}
               titleZh={product.title_zh}
               titleEn={product.title_en}
               descriptionZh={product.description_zh}
@@ -155,6 +168,7 @@ const Products: React.FC = () => {
           <div className="flex justify-end">
             <a 
               href="/contact" 
+              onClick={() => logClickEvent('btn_custom_solution_inquiry')}
               className="inline-block bg-[#0A2A5E] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200"
             >
               <span 

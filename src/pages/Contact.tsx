@@ -1,11 +1,16 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logClickEvent, logPageView } from '../utils/eventLogger';
 import { useContactInfo } from '../hooks/useSupabaseData';
 import { Mail, Phone } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const { currentLanguage } = useLanguage();
   const { contactInfo, loading, error } = useContactInfo();
+
+  React.useEffect(() => {
+    logPageView('/contact');
+  }, []);
 
   if (loading) {
     return (
@@ -81,7 +86,9 @@ const Contact: React.FC = () => {
                     </h3>
                     {info.type === 'email' ? (
                       <a href={`mailto:${info.value}`} className="text-blue-600 hover:underline">
+                        <span onClick={() => logClickEvent(`contact_email_${info.id}`)}>
                         {info.value}
+                        </span>
                       </a>
                     ) : (
                       <p className="text-gray-600">{info.value}</p>

@@ -1,11 +1,16 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logPageView } from '../utils/eventLogger';
 import { useAboutSections } from '../hooks/useSupabaseData';
 import { Globe, Award, Users, Lightbulb } from 'lucide-react';
 
 const About: React.FC = () => {
   const { currentLanguage } = useLanguage();
   const { sections, loading, error } = useAboutSections();
+
+  React.useEffect(() => {
+    logPageView('/about');
+  }, []);
 
   if (loading) {
     return (

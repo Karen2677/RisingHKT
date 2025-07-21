@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logProductView } from '../utils/eventLogger';
 import ProductModal from './ProductModal';
 
 interface ProductCardProps {
+  id?: string;
   titleZh: string;
   titleEn: string;
   descriptionZh: string;
@@ -21,6 +23,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
+  id,
   titleZh,
   titleEn,
   descriptionZh,
@@ -33,6 +36,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const { currentLanguage } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleLearnMore = () => {
+    if (id) {
+      logProductView(id);
+    }
+    setIsModalOpen(true);
+  };
 
   const renderFeatures = (featureList?: string[]) => {
     if (!Array.isArray(featureList)) {
@@ -83,7 +93,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </span>
           </p>
           <button 
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleLearnMore}
             className="mt-4 bg-[#0A2A5E] text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors duration-200 self-end"
           >
             <span className={currentLanguage === 'zh' ? 'block' : 'hidden'} data-lang="zh">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mail, Phone } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logClickEvent } from '../utils/eventLogger';
 
 const Footer: React.FC = () => {
   const { t } = useLanguage();
@@ -28,7 +29,9 @@ const Footer: React.FC = () => {
             <div className="flex items-center mb-2">
               <Mail size={18} className="mr-2" />
               <a href="mailto:risinghkt@outlook.com" className="text-blue-200 hover:text-white transition-colors">
+                <span onClick={() => logClickEvent('footer_email_click')}>
                 risinghkt@outlook.com
+                </span>
               </a>
             </div>
             <div className="flex items-center mb-2">
@@ -44,27 +47,37 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li>
                 <a href="/" className="text-blue-200 hover:text-white transition-colors">
+                  <span onClick={() => logClickEvent('footer_nav_home')}>
                   {t('首页', 'Home')}
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/products" className="text-blue-200 hover:text-white transition-colors">
+                  <span onClick={() => logClickEvent('footer_nav_products')}>
                   {t('产品与服务', 'Products & Services')}
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/news" className="text-blue-200 hover:text-white transition-colors">
+                  <span onClick={() => logClickEvent('footer_nav_news')}>
                   {t('行业动态', 'Industry News')}
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/about" className="text-blue-200 hover:text-white transition-colors">
+                  <span onClick={() => logClickEvent('footer_nav_about')}>
                   {t('关于我们', 'About Us')}
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/contact" className="text-blue-200 hover:text-white transition-colors">
+                  <span onClick={() => logClickEvent('footer_nav_contact')}>
                   {t('联系方式', 'Contact Us')}
+                  </span>
                 </a>
               </li>
             </ul>

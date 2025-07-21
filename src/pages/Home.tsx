@@ -1,10 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { logClickEvent, logPageView } from '../utils/eventLogger';
 import { Brain, Microscope, Globe, BarChart4 } from 'lucide-react';
 
 const Home: React.FC = () => {
   const { currentLanguage } = useLanguage();
+  
+  React.useEffect(() => {
+    logPageView('/');
+  }, []);
   
   return (
     <div>
@@ -54,6 +59,7 @@ const Home: React.FC = () => {
             <div className="flex flex-wrap justify-center gap-4">
               <Link 
                 to="/products" 
+                onClick={() => logClickEvent('btn_explore_products_hero')}
                 className="bg-white text-[#0A2A5E] px-6 py-3 rounded-lg font-medium hover:bg-blue-100 transition-colors duration-200"
               >
                 <span 
@@ -71,6 +77,7 @@ const Home: React.FC = () => {
               </Link>
               <Link 
                 to="/contact" 
+                onClick={() => logClickEvent('btn_contact_us_hero')}
                 className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors duration-200"
               >
                 <span 
@@ -286,6 +293,7 @@ const Home: React.FC = () => {
           </p>
           <Link 
             to="/contact" 
+            onClick={() => logClickEvent('btn_contact_now_cta')}
             className="inline-block bg-white text-[#0A2A5E] px-8 py-3 rounded-lg font-medium hover:bg-blue-100 transition-colors duration-200"
           >
             <span 
