@@ -26,10 +26,10 @@ export const logPageView = async (pagePath: string) => {
 };
 
 // 产品查看事件记录
-export const logProductView = async (productId: string) => {
+export const logProductView = async (productIdentifier: string) => {
   try {
     await supabase.from('site_event_logs').insert([{
-      event_key: `product_view_${productId}`,
+      event_key: `product_view_${productIdentifier}`,
       ip_address: '',
       referer: document.referrer || null
     }]);

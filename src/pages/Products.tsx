@@ -117,6 +117,7 @@ const Products: React.FC = () => {
             <ProductCard
               key={product.id}
              id={product.id}
+              productSlug={product.product_slug}
               titleZh={product.title_zh}
               titleEn={product.title_en}
               descriptionZh={product.description_zh}

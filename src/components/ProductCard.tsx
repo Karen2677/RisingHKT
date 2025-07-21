@@ -5,6 +5,7 @@ import ProductModal from './ProductModal';
 
 interface ProductCardProps {
   id?: string;
+  productSlug?: string;
   titleZh: string;
   titleEn: string;
   descriptionZh: string;
@@ -24,6 +25,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({
   id,
+  productSlug,
   titleZh,
   titleEn,
   descriptionZh,
@@ -38,8 +40,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLearnMore = () => {
-    if (id) {
-      logProductView(id);
+    const identifier = productSlug || id;
+    if (identifier) {
+      logProductView(identifier);
     }
     setIsModalOpen(true);
   };
