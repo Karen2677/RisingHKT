@@ -278,14 +278,7 @@ const News: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default News;
+            <p className="text-gray-600 mt-4">
               <span 
                 className={currentLanguage === 'zh' ? 'block' : 'hidden'} 
                 data-lang="zh"
