@@ -84,7 +84,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </p>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="mt-4 bg-[#0A2A5E] text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors duration-200 self-start"
+            className="mt-4 bg-[#0A2A5E] text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors duration-200 flex justify-end"
           >
             <span className={currentLanguage === 'zh' ? 'block' : 'hidden'} data-lang="zh">
               了解更多
