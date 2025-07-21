@@ -251,6 +251,9 @@ const News: React.FC = () => {
                   ) : (
                     <button 
                       onClick={() => handleReadMore(article)}
+                      className="text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
+                    >
+                      {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
                     </button>
                   )}
                 </div>
