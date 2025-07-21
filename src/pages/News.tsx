@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useNewsArticles, incrementViewCount, incrementShareCount } from '../hooks/useSupabaseData';
-import ArticleModal from '../components/ArticleModal';
 import { Calendar, ExternalLink, Eye, Share2, Tag } from 'lucide-react';
 import type { NewsArticle } from '../types/database';
 
@@ -9,8 +9,6 @@ const News: React.FC = () => {
   const { currentLanguage } = useLanguage();
   const { articles, loading, error } = useNewsArticles();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (loading) {
     return (
@@ -49,13 +47,6 @@ const News: React.FC = () => {
   const handleReadMore = (article: NewsArticle) => {
     // Increment view count when user clicks to read more
     incrementViewCount(article.id);
-    
-    if (article.external_link) {
-      window.open(article.external_link, '_blank', 'noopener,noreferrer');
-    } else {
-      setSelectedArticle(article);
-      setIsModalOpen(true);
-    }
   };
 
   const handleShare = async (article: NewsArticle) => {
@@ -186,12 +177,13 @@ const News: React.FC = () => {
                             <ExternalLink size={16} />
                           </a>
                         ) : (
-                          <button 
+                          <Link
+                            to={`/news/${article.slug || article.id}`}
                             onClick={() => handleReadMore(article)}
                             className="text-[#0A2A5E] hover:text-blue-700 font-medium"
                           >
                             {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
-                          </button>
+                          </Link>
                         )}
                         
                         <button
@@ -293,12 +285,13 @@ const News: React.FC = () => {
                         <ExternalLink size={14} />
                       </a>
                     ) : (
-                      <button 
+                      <Link
+                        to={`/news/${article.slug || article.id}`}
                         onClick={() => handleReadMore(article)}
                         className="text-[#0A2A5E] hover:text-blue-700 text-sm font-medium"
                       >
                         {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
-                      </button>
+                      </Link>
                     )}
                     
                     <button
@@ -390,13 +383,6 @@ const News: React.FC = () => {
           </div>
         )}
       </div>
-
-      <ArticleModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        article={selectedArticle}
-        onShare={handleShare}
-      />
     </div>
   );
 };
