@@ -100,59 +100,6 @@ const Products: React.FC = () => {
         </div>
 
         {/* Product Grid */}
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {Array.isArray(filteredProducts) && filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                titleZh={product.title_zh}
-                titleEn={product.title_en}
-                descriptionZh={product.description_zh}
-                descriptionEn={product.description_en}
-                detailsZh={product.details_zh}
-                detailsEn={product.details_en}
-                imageUrl={product.image_url}
-                features={{
-                  zh: product.features_zh || [],
-                  en: product.features_en || []
-                }}
-                applications={{
-                  zh: product.applications_zh || [],
-                  en: product.applications_en || []
-                }}
-              />
-            ))}
-          </div>
-          
-          <div className="mt-16 bg-white p-8 rounded-lg shadow-md">
-            <button
-              onClick={() => setSelectedCategory(null)}
-              className={`px-4 py-2 rounded-full transition-colors duration-200 whitespace-nowrap flex-shrink-0 ${
-                selectedCategory === null
-                  ? 'bg-[#0A2A5E] text-white'
-                  : 'bg-white text-[#0A2A5E] border border-[#0A2A5E] hover:bg-gray-50'
-              }`}
-            >
-              {currentLanguage === 'zh' ? '全部产品' : 'All Products'}
-            </button>
-            {Array.isArray(categories) && categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full transition-colors duration-200 whitespace-nowrap flex-shrink-0 ${
-                  selectedCategory === category.id
-                    ? 'bg-[#0A2A5E] text-white'
-                    : 'bg-white text-[#0A2A5E] border border-[#0A2A5E] hover:bg-gray-50'
-                }`}
-              >
-                {currentLanguage === 'zh' ? category.name_zh : category.name_en}
-              </button>
-            ))}
-              </div>
-            </div>
-          </div>
-        </div>
-        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {Array.isArray(filteredProducts) && filteredProducts.map((product) => (
             <ProductCard
@@ -222,7 +169,6 @@ const Products: React.FC = () => {
               Inquire About Custom Solutions
             </span>
           </a>
-        </div>
         </div>
       </div>
     </div>
