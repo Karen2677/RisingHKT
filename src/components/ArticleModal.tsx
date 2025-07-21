@@ -129,18 +129,19 @@ const ArticleModal: React.FC<ArticleModalProps> = ({ isOpen, onClose, article, o
                   <button
                     onClick={async () => {
                       await onShare(article);
+                     const shareUrl = article.external_link || `${window.location.origin}/news/${article.slug || article.id}`;
                       if (navigator.share) {
                         try {
                           await navigator.share({
                             title: currentLanguage === 'zh' ? article.title_zh : article.title_en,
-                            url: article.external_link || window.location.href
+                           url: shareUrl
                           });
                         } catch (err) {
                           console.log('Share cancelled or failed');
                         }
                       } else {
                         // Fallback: copy to clipboard
-                        const url = article.external_link || window.location.href;
+                       const url = shareUrl;
                         navigator.clipboard.writeText(url).then(() => {
                           alert(currentLanguage === 'zh' ? '链接已复制到剪贴板' : 'Link copied to clipboard');
                         });
