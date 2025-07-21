@@ -162,7 +162,7 @@ const News: React.FC = () => {
                           href={article.external_link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-green-700 font-medium"
+                          className="inline-flex items-center gap-2 text-[#0A2A5E] hover:text-red-700 font-medium"
                         >
                           <span>
                             {currentLanguage === 'zh' ? '阅读全文' : 'Read More'}
