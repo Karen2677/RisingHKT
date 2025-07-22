@@ -28,7 +28,7 @@ const getUserCountry = async (ip: string): Promise<string> => {
   }
 
   try {
-    const countryRes = await fetch(`https://ipapi.co/${ip}/country_name/?lang=zh`);
+    const countryRes = await fetch(`https://ipapi.co/${ip}/country_code/`);
     const country = await countryRes.text();
     cachedCountry = country.trim();
     return cachedCountry;
